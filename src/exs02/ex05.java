@@ -18,7 +18,6 @@ public class ex05 {
         System.out.printf("seu salario de "+salario+ "voce tera que pagar um inss de" +
                 valorINSS);
 
-
     }
 
     private static Double calculoINSS(double salario) {
