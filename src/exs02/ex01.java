@@ -1,4 +1,6 @@
-public class ex08 {
+package exs02;
+
+public class ex01 {
     public static void main(String[] args)
     {
         double nota1=4,nota2=10,nota3=5,nota4=6,media=0;

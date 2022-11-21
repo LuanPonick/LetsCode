@@ -1,7 +1,9 @@
+package exs02;
+
 import java.util.Locale;
 import java.util.Scanner;
 
-public class ex09 {
+public class ex02 {
     public static void main(String[] args){
         Scanner ler1 = new Scanner(System.in);
         Scanner ler2 = new Scanner(System.in);

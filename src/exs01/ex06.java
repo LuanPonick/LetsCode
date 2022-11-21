@@ -1,3 +1,5 @@
+package exs01;
+
 import java.util.Scanner;
 
 public class ex06 {
