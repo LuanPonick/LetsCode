@@ -6,6 +6,7 @@ public class ex06 {
     public static void main(String[] args)
     {
         Scanner ler = new Scanner(System.in);
+
         System.out.print("Digite Largura ");
         double largura = ler.nextDouble();
         System.out.print("Digite comprimento ");
