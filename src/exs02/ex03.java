@@ -59,10 +59,6 @@ public class ex03 {
 
     }
     public static double Salario(){
-
-
-
-
         Scanner lerS = new Scanner(System.in);
         double Salario = 0;
         boolean continuar = false;

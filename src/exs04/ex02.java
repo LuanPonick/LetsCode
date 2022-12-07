@@ -3,25 +3,124 @@ package exs04;
 import java.util.Scanner;
 
 public class ex02 {
-    public static void main(String[] args) {
 
-        String TabuleiroDesenho[][];
+    static public void main(String[] args) {
+        Jogo estado = Jogo.Ninguem;
 
+        final String Player1Caractere = "X";
+        final String Player2Caractere = "O";
+
+        int winsP1 = 0;
+        int winsP2 = 0;
+        int empate = 0;
+
+        String[][] TabuleiroDesenho;
+        System.out.println(estado);
+
+        boolean jogarNovamente = true;
         Title();
-        TabuleiroDesenho = criarTabuleiro();
-        Boolean acabar = false;
         do{
-            MostrarTabulerio(TabuleiroDesenho);
-            //fazer teste de ganhador
-            FazerJogadaPlayer1(TabuleiroDesenho);
-            System.out.printf("\n\n\n\n\n\n\n");
-            MostrarTabulerio(TabuleiroDesenho);
-            //teste de ganhador
-            FazerJogadaPlayer2(TabuleiroDesenho);
-        }while(!acabar);
+            TabuleiroDesenho = criarTabuleiro();
+            boolean acabar = false;
+            do{
+                int jogadas = 0;
+                String ganho = "ninguem";
 
+                MostrarTabulerio(TabuleiroDesenho);
+                FazerJogadaPlayer1(TabuleiroDesenho);
+                ganho = TesteDeVitoria(TabuleiroDesenho,Player1Caractere);
+                jogadas++;
+                if(!ganho.equals("ninguem")){
+                    acabar = true;
+                    estado = Jogo.WinPlayer1;
+                }else {
+                    System.out.print("\n\n\n\n\n\n\n");
+                    MostrarTabulerio(TabuleiroDesenho);
+                    FazerJogadaPlayer2(TabuleiroDesenho);
+                    ganho = TesteDeVitoria(TabuleiroDesenho,Player2Caractere);
+                    jogadas++;
+                    if(!ganho.equals("ninguem")){
+                        acabar = true;
+                        estado = Jogo.WinPlayer2;
+                    }
+                }
+                if(jogadas >= 9){
+                    acabar = true;
+                    estado = Jogo.Empate;
+                }
+            }while(!acabar);
+
+            MostrarTabulerio(TabuleiroDesenho);
+            if(estado == Jogo.WinPlayer1){
+                System.out.println("jogador 1 ganhou");
+            }else if(estado == Jogo.WinPlayer2) {
+                System.out.println("\njogador 2 ganhou");
+            }else {
+                System.out.println("O jogo deu empate");
+            }
+
+            String test;
+            Scanner ler = new Scanner(System.in);
+            do{
+                test = "";
+                System.out.println("Jogar Novamente? <S/N>");
+                test = ler.nextLine();
+                test = test.toUpperCase();
+            }while(!test.equals("S") && !test.equals("N"));
+
+            jogarNovamente = test.equals("S");
+            System.out.println("Deseja jogar novamente");
+        }while(jogarNovamente);
+    }
+    private static String TesteDeVitoria(String[][] Tabulerio
+            ,String PlayerChar)
+    {
+        PlayerChar = "| "+PlayerChar+" |";
+        //Horizontal
+        if(Tabulerio[1][1].equals(PlayerChar)
+                && Tabulerio[1][2].equals(PlayerChar)
+                && Tabulerio[1][3].equals(PlayerChar))
+        {
+            return "VITORIA";
+        } else if (Tabulerio[2][1].equals(PlayerChar)
+                && Tabulerio[2][2].equals(PlayerChar)
+                && Tabulerio[2][3].equals(PlayerChar)) {
+            return "VITORIA";
+        } else if (Tabulerio[3][1].equals(PlayerChar)
+                && Tabulerio[3][2].equals(PlayerChar)
+                && Tabulerio[3][3].equals(PlayerChar)) {
+            return "VITORIA";
+        }
+        //Vertical
+        if(Tabulerio[1][1].equals(PlayerChar)
+                && Tabulerio[2][1].equals(PlayerChar)
+                && Tabulerio[3][1].equals(PlayerChar))
+        {
+            return "VITORIA";
+        } else if (Tabulerio[1][1].equals(PlayerChar)
+                && Tabulerio[2][2].equals(PlayerChar)
+                && Tabulerio[3][2].equals(PlayerChar)) {
+            return "VITORIA";
+        } else if (Tabulerio[1][3].equals(PlayerChar)
+                && Tabulerio[2][3].equals(PlayerChar)
+                && Tabulerio[3][3].equals(PlayerChar)) {
+            return "VITORIA";
+        }
+        //Horizintal
+        if(Tabulerio[1][1].equals(PlayerChar)
+                && Tabulerio[2][2].equals(PlayerChar)
+                && Tabulerio[3][3].equals(PlayerChar))
+        {
+            return "VITORIA";
+        } else if (Tabulerio[1][3].equals(PlayerChar)
+                && Tabulerio[2][2].equals(PlayerChar)
+                && Tabulerio[3][1].equals(PlayerChar)) {
+            return "VITORIA";
+        }
+        return "ninguem";
 
     }
+
     private static String[][] FazerJogadaPlayer1(String Tabuleiro[][]) {
         Scanner lerJ = new Scanner(System.in);
 
@@ -31,19 +130,27 @@ public class ex02 {
         do{
             String Jogada;
 
-                System.out.println("\nDigite a cordenada letra e ao lado a cordenada numero EX( A1 )");
-                System.out.println("Jogador 1(x) digite a posição.");
+            System.out.println("\nDigite a cordenada letra e ao lado a cordenada numero EX( A1 )");
+            System.out.println("Jogador 1(x) digite a posição.");
 
-                Jogada = lerJ.nextLine().toUpperCase().trim().replaceAll("\\s+","");
-                continuar = TestarJogada(Tabuleiro,Jogada);
-                if(!continuar){
-                    System.out.println("Valor impossivel!!!\nTente outro valor");
-                    MostrarTabulerio(Tabuleiro);
-                }else {
-                    Tabuleiro = SalvarJogada(Tabuleiro,Jogada,"X");
-
+            Jogada = lerJ.nextLine().toUpperCase().trim().replaceAll("\\s+","");
+            continuar = TestarJogada(Tabuleiro,Jogada);
+            if(!continuar){
+                System.out.print("Valor impossivel!!!\nTente outro valor");
+                for(int i = 0; i < 3;i++){
+                    System.out.print(".");
+                    try{
+                        Thread.sleep(560);
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
                 }
-          }while(!continuar);
+                System.out.println();
+                MostrarTabulerio(Tabuleiro);
+            }else {
+                Tabuleiro = SalvarJogada(Tabuleiro,Jogada,"X");
+            }
+        }while(!continuar);
 
         return Tabuleiro;
     }
@@ -63,6 +170,15 @@ public class ex02 {
             continuar = TestarJogada(Tabuleiro,Jogada);
             if(!continuar){
                 System.out.println("Valor impossivel!!!\nTente outro valor");
+                for(int i = 0; i < 3;i++){
+                    System.out.print(".");
+                    try{
+                        Thread.sleep(660);
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+                }
+                System.out.println();
                 MostrarTabulerio(Tabuleiro);
             }else {
                 Tabuleiro = SalvarJogada(Tabuleiro,Jogada,"O");
@@ -142,16 +258,12 @@ public class ex02 {
             } else if (i==15) {
                 temp[3][3]= "| ✤ |";
             }
-
-
         }
         return temp;
     }
-
     private static void MostrarTabulerio(String [][] tabulerio) {
         final String space ="   ";
         for(int i = 0; i < 16; i++){
-
             if(i <= 3){
                 System.out.print(tabulerio[0][i]);
             } else if (i <= 7) {
@@ -161,7 +273,6 @@ public class ex02 {
             }else {
                 System.out.print(tabulerio[3][i-12]);
             }
-
             if(i == 3){
                 System.out.println();
             } else if (i == 7) {
@@ -171,15 +282,6 @@ public class ex02 {
             }
         }
     }
-
-
-
-
-
-
-
-
-
     private static void Title() {
         System.out.println("#################################"+
                 "\n O MELHOR JOGO DA VELHO DO ANO" +
