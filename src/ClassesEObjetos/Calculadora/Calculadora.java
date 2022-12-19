@@ -1,4 +1,4 @@
-package ClassesEObjetos;
+package ClassesEObjetos.Calculadora;
 
 import java.util.Scanner;
 

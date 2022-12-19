@@ -1,4 +1,4 @@
-package ClassesEObjetos;
+package ClassesEObjetos.Calculadora;
 
 import java.util.Scanner;
 
@@ -16,20 +16,21 @@ public class Main {
             String resp = ler.next();
             String Teste = FazerTeste(resp, calculadora1);
 
-            if(Teste.equals("SAIR")){
-                continuar = true;
-            }
+            continuar = Teste.equals("SAIR");
 
         }while(!continuar);
     }
     public static void MostrarLog(){
-        System.out.println("--------------------");
-        System.out.println("[1] Trocar valor 1--");
-        System.out.println("[2] Trocar valor 2--");
-        System.out.println("[3] Trocar operador-");
-        System.out.println("[4] Fazer calculo---");
-        System.out.println("[5] Sair do programa");
-        System.out.println("--------------------");
+        System.out.println("-----------------------");
+        System.out.println("[1] Trocar valor 1-----");
+        System.out.println("[2] Trocar valor 2-----");
+        System.out.println("[3] Trocar operador----");
+        System.out.println("[4] Fazer calculo------");
+        System.out.println("[5] Criar calculadora--");
+        System.out.println("[6] Listar Calculadoras");
+        System.out.println("[7] Remover Calc-------");
+        System.out.println("[8] Sair do programa---");
+        System.out.println("-----------------------");
     }
     public static String FazerTeste(String Resposta, Calculadora calc) {
          switch (Resposta) {
@@ -79,7 +80,11 @@ public class Main {
                  calc.fazerCalculo();
                  calc.MostrarResultado();
                  break;
-             case "5":
+             case"5":
+
+                 break;
+
+             case "8":
                  return "SAIR";
 
              default:
