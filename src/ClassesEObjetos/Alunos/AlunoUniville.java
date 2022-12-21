@@ -1,16 +1,11 @@
 package ClassesEObjetos.Alunos;
 
-import ClassesEObjetos.Boletin.Aluno;
-
-public class AlunoUniville extends Pessoa{
-    private double prova1;
-    private double prova2;
-    private double prova3;
+public class AlunoUniville extends Estudante {
     public AlunoUniville(){
 
     }
-    public AlunoUniville(String nomeAluno, String matricula) {
-        super(nomeAluno, matricula);
+    public AlunoUniville(String nomeAluno, String matricula,double nota1,double nota2,double nota3) {
+        super(nomeAluno, matricula,nota1,nota2,nota3);
     }
 
     public double getProva1() {
@@ -45,14 +40,6 @@ public class AlunoUniville extends Pessoa{
                 ", prova3=" + prova3 +
                 '}';
     }
-    public double calcMedia(){
-        double media = (prova1 + (prova2 * 2) + (prova3 *3 ))/6;
-        if(media>=6){
-            System.out.println("Aprovado");
-        }else {
-            System.out.println("reprovado");
-        }
-        return 0;
-    }
+
 
 }

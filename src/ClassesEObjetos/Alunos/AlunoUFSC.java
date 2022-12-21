@@ -2,7 +2,7 @@ package ClassesEObjetos.Alunos;
 
 import java.util.Scanner;
 
-public class AlunoUFSC extends Pessoa{
+public class AlunoUFSC extends Estudante {
     private double notas1;
     private double notas2;
     private double notas3;
@@ -12,11 +12,7 @@ public class AlunoUFSC extends Pessoa{
 
     }
     public AlunoUFSC(String nome, String matricula, double notas1, double notas2, double notas3) {
-        super.getMatricula();
-        super.getNomeAluno();
-        this.notas1 = notas1;
-        this.notas2 = notas2;
-        this.notas3 = notas3;
+        super(nome,matricula,notas1,notas2,notas3);
     }
 
     public double getNotas1() {
@@ -53,19 +49,22 @@ public class AlunoUFSC extends Pessoa{
     public void setNotas3(double notas3) {
         this.notas3 = notas3;
     }
-    public double calcMedia(){
+    public void calcMedia(){
         double media = (this.notas1 + this.notas2)/2;
         if(media >=7){
             System.out.println("Aprovado");
         }else {
             System.out.println("Informe a terceira prova: ");
             this.notas3 = input.nextDouble();
-            if(this.notas3 >= 7){
-                System.out.println("aprovado");
-            }else {
-                System.out.println("reprovado");
-            }
+            calcMedia(((this.notas1 +this.notas2 +this.notas3)/3));
+
         }
-        return 0;
+    }
+    public void calcMedia(double notasJ){
+        if(notasJ >= 7){
+            System.out.println("aprovado");
+        }else {
+            System.out.println("reprovado");
+        }
     }
 }
