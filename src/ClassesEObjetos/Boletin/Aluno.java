@@ -2,7 +2,7 @@ package ClassesEObjetos.Boletin;
 
 public class Aluno {
     public String Nome;
-    public double Notas[][];
+    public double[][] Notas;
     public Aluno(String Nome){
         this.Nome = Nome;
         Notas = new double[3][12];
