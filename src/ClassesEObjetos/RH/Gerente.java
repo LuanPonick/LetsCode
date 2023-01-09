@@ -1,4 +1,4 @@
-package ClassesEObjetos.Projeto;
+package ClassesEObjetos.RH;
 
 public class Gerente extends Pessoa{
     private double salario;
