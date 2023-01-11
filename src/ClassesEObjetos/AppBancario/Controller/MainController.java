@@ -4,7 +4,6 @@ import ClassesEObjetos.AppBancario.Classes.Pessoa;
 import ClassesEObjetos.AppBancario.ToDoing;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class MainController extends FunctionsController{
     //Controllers
@@ -15,8 +14,7 @@ public class MainController extends FunctionsController{
     //ESTADO APLICAÇÃO
     protected ToDoing AplicationState;
     //contas possiveis
-    private Pessoa contaLogadaPessoa;
-    //private Empresa contaLogadaEmpresa;
+    private Pessoa contaLogada;
 
     public MainController(){
         this.AplicationState = ToDoing.OnLogin;
@@ -27,23 +25,39 @@ public class MainController extends FunctionsController{
         {
             case Exit -> SairDoPrograma();
             case OnLogin -> EscolhaDoUsuarioPrimeiraTela(tipoDeClienteController.TipoDeCliente());
-            case LoginOnPessoa ->
-            {
-                String[] result = loginController.LoginCliente();
+            case LoginOnCNPJ ->{
+                String[] result = loginController.LoginCliente(false);
                 if (result == null) {
                     this.AplicationState = ToDoing.OnLogin;
                 } else {
                     //                                  cpf       nome     senha      dia
-                    this.contaLogadaPessoa = new Pessoa(result[0], result[1], result[2], result[3]);
+                    this.contaLogada = new Pessoa(result[0], result[1], result[2], result[3]);
+                    this.AplicationState = ToDoing.LoginOkFromCNPJ;
+                }
+            }
+            case LoginOnPessoa ->
+            {
+                String[] result = loginController.LoginCliente(true);
+                if (result == null) {
+                    this.AplicationState = ToDoing.OnLogin;
+                } else {
+                    //                                  cpf       nome     senha      dia
+                    this.contaLogada = new Pessoa(result[0], result[1], result[2], result[3]);
                     this.AplicationState = ToDoing.LoginOkFromPessoa;
                 }
             }
             case LoginOkFromPessoa ->
             {
                 mainPainelController.ComecarOPrograma(
-                        contaLogadaPessoa.getNome(),
-                        contaLogadaPessoa.getDinheiro(),
+                        contaLogada.getNome(),
+                        contaLogada.getDinheiro(),
                         "CPF");
+            }
+            case LoginOkFromCNPJ -> {
+                mainPainelController.ComecarOPrograma(
+                        contaLogada.getNome(),
+                        contaLogada.getDinheiro(),
+                        "CNPJ");
             }
         }
     }

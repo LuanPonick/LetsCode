@@ -11,6 +11,5 @@ public class Principal {
         do {
             mainController.RodarEstado();
         }while(mainController.getAplicationState() != ToDoing.Exit);
-
     }
 }
