@@ -113,9 +113,17 @@ public class MainPainelController extends FunctionsController{
 
             EmpurraTela();
             LinhaVazia('-',140);
-            System.out.println(CentrealizedText("Digite o cpf da conta que vc deseja transferir"));
+            System.out.println(CentrealizedText("Digite o cpf ou cnpj da conta que vc deseja transferir"));
+            ColunaVazia('|',140);
+            System.out.println(CentrealizedText("Lembrando que caso queira cancelar apenas digite 0"));
             CpfCnpj = ler.next();
-            if(CpfCnpj.length() == 11 || CpfCnpj.length() == 14){
+            if(CpfCnpj.equals("0")){
+                Continuar = true;
+                estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                EmpurraTela();
+
+            }
+            else if(CpfCnpj.length() == 11 || CpfCnpj.length() == 14){
                 boolean Certo = false;
                 do{
                     double valor = 0;
@@ -149,14 +157,19 @@ public class MainPainelController extends FunctionsController{
                                 EmpurraTela();
                                 LinhaVazia('-',140);
                                 ColunaVazia('|',140);
-                                TextoAEsquerda("Sua transferencia esta sendo feita",140);
+                                System.out.println(CentrealizedText("Sua transferencia esta sendo feita"));
                                 System.out.println(CentrealizedText("..."));
                                 ColunaVazia('|',140);
                                 LinhaVazia('-',140);
                                 Pausa(3000);
                                 EmpurraTela();
-                                System.out.print(CentrealizedText("Transferencia feita com sucesso"));Reticencias(2500,3,'!');
+                                System.out.println(CentrealizedText("Transferencia feita com sucesso"));
+                                ColunaVazia('|',140);
+                                LinhaVazia('-',140);
+                                Reticencias(2500,3,'!');
                                 Pausa(2000);
+                                EmpurraTela();
+                                estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                             }
                         }
                     }catch (Exception a){
@@ -206,7 +219,10 @@ public class MainPainelController extends FunctionsController{
             }else if(CpfCnpj.length() == 14){
                 System.out.println(CentrealizedText("Voce esta fazendo uma transacao para um cpf"));
             }else{
-                System.out.println(CentrealizedText("Voce esta fazendo uma transacao para um cpf"));
+                EmpurraTela();
+                System.out.print("Digite um cpf ou cnpj valido");
+                Reticencias(1500,3,'!');
+                Pausa(2500);
             }
 
 
@@ -243,6 +259,7 @@ public class MainPainelController extends FunctionsController{
                     estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                     System.out.println(CentrealizedText("Seu Sacar foi cancelado"));
                     Reticencias(2000,3);
+                    EmpurraTela();
                     Correto = true;
                 }else{
                     if(Dinheiro > valor){
@@ -256,6 +273,8 @@ public class MainPainelController extends FunctionsController{
                         Reticencias(2000,3);
                         estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                         Correto = true;
+                        System.out.println();
+                        EmpurraTela();
                     }
                 }
                 }
@@ -278,11 +297,18 @@ public class MainPainelController extends FunctionsController{
             System.out.println(CentrealizedText("lembrando que caso queira sair apenas digite 0"));
             try{
                 double quantidade = ler.nextDouble();
-                if(quantidade <= 0){
+                if(quantidade == 0)
+                {
+                    estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                    Continuar = true;
+                    EmpurraTela();
+                } else if(quantidade < 0)
+                {
                     System.out.println(CentrealizedText("Digite um valor positivo"));
                     Reticencias(2000,3);
                     Pausa(500);
-                }else{
+                }else
+                {
                     Continuar = true;
                     Dinheiro += quantidade;
                 }
