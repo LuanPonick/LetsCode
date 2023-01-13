@@ -6,10 +6,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class MainPainelController extends FunctionsController{
-//    public static void main(String[] args) {
-//        MainPainelController a = new MainPainelController();
-//        a.ComecarOPrograma("Luan DaviDaviDaviDaviDavi Ponick" , 0,"CPF");
-//    }
+    public static void main(String[] args) {
+        MainPainelController a = new MainPainelController();
+        a.ComecarOPrograma("Luan DaviDaviDaviDaviDavi Ponick" , 0,"CNPJ");
+    }
     private Boolean Investimeto = false;
     private String Nome;
     private double Dinheiro;
@@ -96,7 +96,6 @@ public class MainPainelController extends FunctionsController{
             case OnTransferir -> {
                 Transferir();
             }
-
             case OnMostrandoInterfaceInvestimento -> {
                 InterfaceDeInvestimento();
             }
@@ -114,6 +113,9 @@ public class MainPainelController extends FunctionsController{
             EmpurraTela();
             LinhaVazia('-',140);
             System.out.println(CentrealizedText("Digite o cpf ou cnpj da conta que vc deseja transferir"));
+            if(TipoCliente.equals("Cnpj")){
+                System.out.println(CentrealizedText("Como vc é cnpj tera uma cobrança de 0,5% a mais"));
+            }
             ColunaVazia('|',140);
             System.out.println(CentrealizedText("Lembrando que caso queira cancelar apenas digite 0"));
             CpfCnpj = ler.next();
@@ -124,6 +126,7 @@ public class MainPainelController extends FunctionsController{
 
             }
             else if(CpfCnpj.length() == 11 || CpfCnpj.length() == 14){
+
                 boolean Certo = false;
                 do{
                     double valor = 0;
@@ -140,6 +143,10 @@ public class MainPainelController extends FunctionsController{
 
                     try {
                         valor = ler.nextDouble();
+                        if(valor < 0){
+                            Continuar = false;
+                            throw new RuntimeException();
+                        }
                         if(valor == 0){
                             Certo = true;
                             Continuar = true;
@@ -152,27 +159,99 @@ public class MainPainelController extends FunctionsController{
                                 Reticencias(3000,3);
                                 estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                                 Certo = true;
+
                                 Continuar = true;
                             }else {
+                                boolean realizarT = true;
                                 EmpurraTela();
-                                LinhaVazia('-',140);
-                                ColunaVazia('|',140);
-                                System.out.println(CentrealizedText("Sua transferencia esta sendo feita"));
-                                System.out.println(CentrealizedText("..."));
-                                ColunaVazia('|',140);
-                                LinhaVazia('-',140);
-                                Pausa(3000);
-                                EmpurraTela();
-                                System.out.println(CentrealizedText("Transferencia feita com sucesso"));
-                                ColunaVazia('|',140);
-                                LinhaVazia('-',140);
-                                Reticencias(2500,3,'!');
-                                Pausa(2000);
-                                EmpurraTela();
+                                if(TipoCliente.equals("CNPJ")){
+                                    boolean c = false;
+                                    do{
+                                        EmpurraTela();
+                                        Scanner lera = new Scanner(System.in);
+                                        LinhaVazia('-', 140);
+                                        System.out.println(CentrealizedText("Você esta tentando transferir um valor de " + valor));
+                                        valor += 0.5 * (valor / 100);
+                                        System.out.println(CentrealizedText("Mas sera cobrado um valor de " + valor));
+                                        String[] escolhas = {"| [0] cancelar transferencia","| [1]realizar Transferencia"};
+                                        TextoAEsquerda(escolhas,140);
+                                        try{
+                                            int escolha = lera.nextInt();
+                                            if(escolha == 0){
+                                                realizarT = false;
+                                            } else if (escolha == 1) {
+                                                if(valor < Dinheiro){
+                                                    realizarT = true;
+                                                }else{
+                                                    realizarT = false;
+                                                    System.out.println(CentrealizedText("Voce nao possue saldo o suficiente"));
+
+                                                }
+                                            }else {
+                                                throw new RuntimeException();
+                                            }
+                                            c = true;
+                                        }catch (RuntimeException e){
+                                            EmpurraTela();
+                                            System.out.print("Digite um valor valido");
+                                            Reticencias(3000,3);
+                                            Pausa(1000);
+                                        }
+                                        catch (Exception e){
+                                            EmpurraTela();
+                                            System.out.print("Digite um valor numerico");
+                                            Reticencias(3000,3);
+                                            Pausa(1000);
+                                        }
+                                    }while(!c);
+                                }
+                                if(realizarT){
+                                    LinhaVazia('-',140);
+                                    ColunaVazia('|',140);
+                                    System.out.println(CentrealizedText("Sua transferencia esta sendo feita"));
+                                    System.out.println(CentrealizedText("..."));
+                                    ColunaVazia('|',140);
+                                    LinhaVazia('-',140);
+                                    Pausa(3000);
+                                    EmpurraTela();
+                                    System.out.println(CentrealizedText("Transferencia feita com sucesso"));
+                                    ColunaVazia('|',140);
+                                    LinhaVazia('-',140);
+                                    Reticencias(2500,3,'!');
+                                    Pausa(2000);
+                                    EmpurraTela();
+                                    Dinheiro -= valor;
+                                    Certo = true;
+                                    Continuar = true;
+                                }else {
+                                    Certo = true;
+                                    Continuar = true;
+                                    LinhaVazia('-',140);
+                                    ColunaVazia('|',140);
+                                    System.out.println(CentrealizedText("Sua transferencia esta sendo cancelada"));
+                                    System.out.println(CentrealizedText("..."));
+                                    ColunaVazia('|',140);
+                                    LinhaVazia('-',140);
+                                    Pausa(3000);
+                                    EmpurraTela();
+                                    System.out.println(CentrealizedText("Transferencia cancelada com sucesso"));
+                                    ColunaVazia('|',140);
+                                    LinhaVazia('-',140);
+                                    Reticencias(2500,3,'!');
+                                    Pausa(2000);
+                                    EmpurraTela();
+                                }
+
                                 estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                             }
                         }
-                    }catch (Exception a){
+                    }catch (RuntimeException e){
+                        EmpurraTela();
+                        System.out.print("Valor impossivel");Reticencias(3000,3);
+                        System.out.println();
+                    }
+                    catch (Exception a)
+                    {
                         EmpurraTela();
                         System.out.print("Valor impossivel");Reticencias(3000,3);
                         try {
@@ -237,6 +316,9 @@ public class MainPainelController extends FunctionsController{
             double valor = 0;
             LinhaVazia('-',140);
             System.out.println(CentrealizedText("Você deseja sacar quanto dinheiro?"));
+            if(TipoCliente.equals("CNPJ")){
+                System.out.println(CentrealizedText("Como você é cnpj voce tera uma cobrança de 0,5% amais em cada saque !!!"));
+            }
             ColunaVazia('|',140);
             System.out.println(CentrealizedText("Lembrando que caso queria voltar para o menu digite 0"));
             try {
@@ -250,38 +332,47 @@ public class MainPainelController extends FunctionsController{
                     EmpurraTela();
                     System.out.println("Digite um valor valido");
                     Reticencias(1500,3);
-                }else{
+                }else {
                     Scanner escolha = new Scanner(System.in);
-                    System.out.println(CentrealizedText("Voce tem certeza que quer Sacar "+valor +"?") );
-                String[] ValoresPossives = {"[0] Para Cancelar", "[1] Para realizar o saque"};
-                TextoAEsquerda(ValoresPossives,140);
-                if(escolha.nextInt() == 0){
-                    estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
-                    System.out.println(CentrealizedText("Seu Sacar foi cancelado"));
-                    Reticencias(2000,3);
-                    EmpurraTela();
-                    Correto = true;
-                }else{
-                    if(Dinheiro > valor){
-                        Dinheiro -= valor;
-                        System.out.println(CentrealizedText("Seu saque foi efetuado com sucesso"));
-                        Reticencias(2000,3);
-                        estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
-                        Correto = true;
-                    }else{
-                        System.out.println(CentrealizedText("Seu saque foi reprovado"));
-                        Reticencias(2000,3);
-                        estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
-                        Correto = true;
-                        System.out.println();
+                    if (TipoCliente.equals("CPF")) {
+                        System.out.println(CentrealizedText("Voce tem certeza que quer Sacar " + valor + "?"));
+                    } else {
                         EmpurraTela();
+                        LinhaVazia('-', 140);
+                        System.out.println(CentrealizedText("Você esta tentando sacar um valor de " + valor));
+                        valor += 0.5 * (valor / 100);
+                        System.out.println(CentrealizedText("Mas sera cobrado um valor de " + valor));
                     }
-                }
+                    String[] ValoresPossives = {"[0] Para Cancelar", "[1] Para realizar o saque"};
+                    TextoAEsquerda(ValoresPossives, 140);
+                    if (escolha.nextInt() == 0) {
+                        estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                        System.out.println(CentrealizedText("Seu Sacar foi cancelado"));
+                        Reticencias(2000, 3);
+                        EmpurraTela();
+                        Correto = true;
+                    } else {
+                        if (Dinheiro > valor) {
+                            Dinheiro -= valor;
+                            System.out.println(CentrealizedText("Seu saque foi efetuado com sucesso"));
+                            Reticencias(2000, 3);
+                            estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                            Correto = true;
+                            EmpurraTela();
+                        } else {
+                            System.out.println(CentrealizedText("Seu saque foi reprovado"));
+                            Reticencias(2000, 3);
+                            estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                            Correto = true;
+                            System.out.println();
+                            EmpurraTela();
+                        }
+                    }
                 }
             }catch (Exception e){
                 Correto = false;
                 System.out.println(CentrealizedText("Digite um valor numerico"));
-                Reticencias(1500, '.');
+                Reticencias(1500, 3);
             }
         }while(!Correto);
         RealizarAcoes();
@@ -289,6 +380,7 @@ public class MainPainelController extends FunctionsController{
     private void Depositar(){
         boolean Continuar = false;
         do{
+            EmpurraTela();
             Scanner ler = new Scanner(System.in);
             LinhaVazia('-',140);
             System.out.println(CentrealizedText("Seje bem vindo ao Depósito"));
@@ -440,7 +532,6 @@ public class MainPainelController extends FunctionsController{
     private void Visualizacao(){
         System.out.print("|");
         System.out.print("          ");
-        //11
         String Palvara = "Nome :";
         System.out.print("           ");
         System.out.print(Palvara);
@@ -581,7 +672,7 @@ public class MainPainelController extends FunctionsController{
                             }while(!cont);
                         }
                         case 2-> {
-                            AtivarContaInvestimento();
+                            AtivarContaInvestimento(false);
                             Continuar = true;
                         }
 
@@ -599,9 +690,16 @@ public class MainPainelController extends FunctionsController{
                             estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
                             Continuar = true;
                         }
+                        case 1->{
+                            Continuar = true;
+                            while(!AvisoDeImpossivel()){
+                                InterfaceDeInvestimento(true);
+                                LinhaVazia('-',140);
+                            }
+                        }
                         case 2->{
                             Continuar = true;
-                            AvisoDeImpossivel();
+                            AtivarContaInvestimento(true);
                         }
                     }
                 }
@@ -617,15 +715,43 @@ public class MainPainelController extends FunctionsController{
 
         RealizarAcoes();
     }
-    public void AvisoDeImpossivel(){
-        EmpurraTela();
+    public boolean AvisoDeImpossivel(){
         System.out.println(CentrealizedText("Ola querido usuario você nao consegui criar contas poupança devido a ser CNPJ"));
         System.out.println(CentrealizedText("Mas lembrando sempre da opção de investimento que caso você a ative voce ganhara alem dos 150% + 2%"));
         LinhaVazia('-',140);
-        Reticencias(2000,3);
+        boolean Continuar = true;
+        do{
+            try{
+                Scanner ler = new Scanner(System.in);
+                String[] escolhas = {
+                    "[0] para retornar ao menu de investimentos",
+                    "[1] para ir ao menu de ativar conta investimento"
+                };
+                TextoAEsquerda(escolhas,140);
+                LinhaVazia('-',140);
+                System.out.print("Digite o valor q deseja : ");
+                int escolha = ler.nextInt();
+                if(escolha == 0)
+                {
+                    Continuar = true;
+                    estadoAtual = EstadoAtual.OnMostrandoInterfaceInvestimento;
+                }else{
+                    Continuar = true;
+                    AtivarContaInvestimento(false);
+                }
+            }catch (Exception e){
+                Continuar = true;
+                EmpurraTela();
+                System.out.print("Digite um valor numérico");
+                Reticencias(3000,3,'!');
+                Pausa(1000);
+                EmpurraTela();
+                return false;
+            }
+        }while (!Continuar);
+        return true;
     }
-
-    private void AtivarContaInvestimento(){
+    private void AtivarContaInvestimento(boolean isCNPJ){
         boolean continuar = false;
         do{
             try{
@@ -637,7 +763,11 @@ public class MainPainelController extends FunctionsController{
                 System.out.println(CentrealizedText("Aqui voce selecionou a opção de investimento pela investimento"));
                 System.out.println(CentrealizedText("Caso você ative essa opção a sua conta entrara por 30 como uma conta de investimento"));
                 System.out.println(CentrealizedText("E caso haja algum investimento interessante a ser feito nos iremos pegar até 40% da sua conta para investi"));
-                System.out.println(CentrealizedText("E depois de 1 mês que nos tenhos pego seu dinheiro nos iremos te tornar 150% do valor pego"));
+                if(isCNPJ){
+                    System.out.println(CentrealizedText("E depois de 1 mês que nos tenhos pego seu dinheiro nos iremos te tornar 150% do valor pego + 2% por ser cnpj"));
+                }else{
+                    System.out.println(CentrealizedText("E depois de 1 mês que nos tenhos pego seu dinheiro nos iremos te tornar 150% do valor pego"));
+                }
                 ColunaVazia('|', 140);
                 System.out.println(CentrealizedText("Quando passar esse 1 mês a sua conta automaticamente voltara ao modo não investimento"));
                 LinhaVazia('-', 140);
@@ -693,8 +823,14 @@ public class MainPainelController extends FunctionsController{
         boolean digitouCorreto = false;
         try {
             valor = Double.parseDouble(result);
+            if(valor < 0){
+                throw new RuntimeException();
+            }
             digitouCorreto = true;
-        }catch (Exception e){
+        }catch (RuntimeException a){
+            valor *= -1;
+        }
+        catch (Exception e){
             try{
                 digitouCorreto = false;
                 String Plate = result.replaceAll("[^0-9 ,]","");
@@ -739,6 +875,11 @@ public class MainPainelController extends FunctionsController{
             if(valor > Dinheiro)
             {
                 System.out.println(CentrealizedText("Você não tem dinheiro o suficiente para fazer esse deposito"));
+                ColunaVazia('|',140);
+                LinhaVazia('-',140);
+                Reticencias(3000,3);
+                Pausa(1000);
+                estadoAtual = EstadoAtual.OnMostrandoInterfaceInvestimento;
             }else{
                 boolean Continuar = false;
 

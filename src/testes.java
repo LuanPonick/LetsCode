@@ -32,10 +32,9 @@ public class testes {
 //        a = a.substring (0, a.length() - 1);
 //        System.out.println(a);
 //        System.out.println("a");
-        String tamanhoIni = "190a0,12";
-        tamanhoIni = tamanhoIni.replaceAll("[^0-9 ,]", "");
-        System.out.println(tamanhoIni);
-
+//        String tamanhoIni = "190a0,12";
+//        tamanhoIni = tamanhoIni.replaceAll("[^0-9 ,]", "");
+//        System.out.println(tamanhoIni);
 
 
         //        int valor = 0;
