@@ -6,10 +6,6 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class MainPainelController extends FunctionsController{
-    public static void main(String[] args) {
-        MainPainelController a = new MainPainelController();
-        a.ComecarOPrograma("Luan DaviDaviDaviDaviDavi Ponick" , 0,"CNPJ");
-    }
     private Boolean Investimeto = false;
     private String Nome;
     private double Dinheiro;
@@ -35,6 +31,17 @@ public class MainPainelController extends FunctionsController{
             RealizarAcoes();
         }while (estadoAtual != EstadoAtual.OnExit);
     }
+
+    @Override
+    public String toString() {
+        return "informaçoes{" +
+                "\nInvestimeto=" + Investimeto +
+                "\n, Nome='" + Nome + '\'' +
+                "\n, Dinheiro=" + Dinheiro +
+                "\n, TipoCliente='" + TipoCliente + '\'' +
+                '}';
+    }
+
     private void EscolhaDoUsuarioOnBody(){
         boolean Correto = false;
         do{
@@ -60,6 +67,13 @@ public class MainPainelController extends FunctionsController{
                     }
                     case 4 ->{
                         estadoAtual = EstadoAtual.OnMostrandoInterfaceInvestimento;
+                        Correto = true;
+                    }case 5 ->{
+                        estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
+                        EmpurraTela();
+                        System.out.println(toString());
+                        Pausa(5000);
+                        EmpurraTela();
                         Correto = true;
                     }
                     default -> {
@@ -488,7 +502,9 @@ public class MainPainelController extends FunctionsController{
                 "| [1] Para Sacar seu dinheiro",
                 "| [2] Para depositar seu dinheiro",
                 "| [3] Para transferir",
-                "| [4] Para investir"};
+                "| [4] Para investir",
+                "| [5] informaçoes da conta"
+        };
 
         LinhaVazia('-',tamanhoTotal);
         ColunaVazia('|',tamanhoTotal);
