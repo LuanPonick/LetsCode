@@ -1,18 +1,7 @@
-## link do gist do sor https://gist.github.com/brunoapimentel/c56d7a855b39478086e018fad6528e19
+# Lets code 
+Aqui você ira encontrar meus estudos em java feitos pela ADA no projeto lets Code
 
-#APP Banco                                                                    
-Crie uma aplicação que simule uma app bancária.                       
-Os clientes podem ser pessoa física ou jurídica,                      
-sendo que para PJ existe a cobrança de uma taxa de 0.5% para          
-cada saque ou transferência.
-Além do produto conta-corrente, os clientes PF podem abrir uma                
-conta-poupança e conta-investimento.                                          
-Clientes PJ não abrem poupança, mas seus rendimentos                          
-em conta-investimento rendem 2% a mais.
-Crie as funcionalidades: abrir conta, sacar, depositar,
-transferência, investir, consultar saldo.
+___
 
-Use a classe "Aplicacao" para criar seu método "main" e
-demonstrar o funcionamento do seu código.
-O projeto pode ser entregue via link de  
-repositório Github, também no Class.
+> ## [./LetsCode/src/ClassesEObjetos/AppBancario](https://github.com/LuanPonick/LetsCode/tree/main/src/ClassesEObjetos/AppBancario)
+> Esse é um projeto que simula um programa de banco com funcionalidades classicas e novas com uma interface visual 100% no terminal.
