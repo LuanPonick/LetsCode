@@ -912,12 +912,6 @@ public class MainPainelController extends FunctionsController{
                         Dinheiro -= valor;
                         EmpurraTela();
                         estadoAtual = EstadoAtual.OnMostrandoInterfaceBody;
-                        ///
-
-                        // FAZER A PORRA DA CONTA NO "BANCO DE DADOS"
-
-
-                        ///
                         Continuar = true;
                     }
                 }while (!Continuar);
